@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vueLibrary/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model='keyword'> {{msg}}
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                keyword: '',
+                msg: '',
+            },
+            methods: {
+                checkName(name) {
+                    let that = this
+                    setTimeout(() => {
+                        if (name == 'admin') {
+                            that.msg = '已存在'
+                        } else {
+                            that.msg = '请注册'
+                        }
+                    }, 3000)
+                }
+
+            },
+            watch: {
+                keyword(val) {
+                    this.checkName(val)
+
+                    this.msg = '正再验证'
+
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

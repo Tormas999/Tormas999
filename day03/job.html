@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vueLibrary/vue.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        div {
+            width: 498px;
+            border: 1px solid;
+            height: 35px;
+            margin: 0 auto;
+            background-color: #F6E1B2;
+            line-height: 35px;
+        }
+        
+        input {
+            width: 150px;
+        }
+        
+        td {
+            width: 125px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        tr td:nth-child(1) {
+            width: 40px;
+        }
+        
+        tr td:nth-child(2) {
+            width: 210px;
+        }
+        
+        .nav {
+            background-color: #F6E1B2;
+        }
+        
+        .inp {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="inp">
+            <span>编号：
+                <input type="text" v-model="newid" :disabled="isdisabled">
+            </span>
+            <span>
+                名称：
+                <input type="text" v-model="newname">
+            </span>
+            <button @click='submit'>提交</button>
+        </div>
+        <div>图书总数：{{sum2}}</div>
+
+        <table border="1px">
+            <tr class="nav">
+                <td>编号</td>
+                <td>名称</td>
+                <td>时间</td>
+                <td>操作</td>
+            </tr>
+            <!-- <tr v-for="(item, index) in books" :key="index"> -->
+            <tr v-for="(item, index) in books" :key="item.id">
+                <td>{{(item.id)=index+1}}</td>
+                <!-- <td>{{index+1}}</td> -->
+                <td>{{item.name}}</td>
+                <td>{{newdate|ye}}</td>
+                <td>
+                    <a href="#" @click='editor(index)'>修改</a> ||
+                    <a href="#" @click='deletebok(index)'>删除</a>
+                </td>
+            </tr>
+
+
+        </table>
+
+    </div>
+
+
+
+    <script>
+        Vue.filter('ye', function(date) {
+            // if (date.getSeconds() < 10) {
+
+            //     return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '  ' + (date.getHours() + 1) + ':' + (date.getMinutes < 10 ? 0 + date.getMinutes() : date.getMinutes()) + ':' + '0' + date.getSeconds()
+
+            // } else if (date.getMinutes() < 10) {
+            //     return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '  ' + (date.getHours() + 1) + ':' + 0 + date.getMinutes() + ':' + date.getSeconds()
+            // } else if (date.getSeconds() < 10 && date.getMinutes() < 10) {
+            //     return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '  ' + (date.getHours() + 1) + ':' + 0 + date.getMinutes() + ':' + 0 + date.getSeconds()
+            // } else {
+            //     return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '  ' + (date.getHours() + 1) + ':' + date.getMinutes() + ':' + date.getSeconds()
+            // }
+
+            return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '  ' + (date.getHours() + 1) + ':' + (date.getMinutes() < 10 ? 0 + date.getMinutes() : date.getMinutes()) + ':' + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds())
+        })
+
+
+
+        new Vue({
+            el: '#app',
+            data: {
+                newid: '',
+                newname: '',
+                isdisabled: false,
+                sum: '',
+                index: '',
+
+                newdate: new Date(),
+
+                books: [{
+                    id: 1,
+                    name: "HTML入门到跑路",
+                }, {
+                    id: 2,
+                    name: "css从入门到秃头",
+                }, {
+                    id: 3,
+                    name: "JS从入门到删库",
+                }, {
+                    id: 4,
+                    name: "Node从入门到拔服务器",
+                }, ]
+            },
+            methods: {
+                submit() {
+
+                    if (this.newname == '') {
+                        alert('请输入添加内容')
+
+                    } else {
+
+                        if (this.isdisabled) {
+                            console.log("修改");
+                            console.log(this.books[this.index]);
+                            this.books[this.index].name = this.newname
+
+                            this.newid = '';
+                            this.newname = ''
+
+                            this.isdisabled = false
+                        } else {
+                            let obj = {}
+                            obj.id = this.newid;
+                            obj.name = this.newname
+
+                            console.log(this.books);
+
+                            console.log(this.books.length);
+
+
+
+                            this.books.push(obj)
+
+                            console.log(this.books.id);
+
+                            // this.sum = this.books.length
+
+
+
+
+                            this.newid = '';
+                            this.newname = ''
+
+
+                        }
+
+
+
+                    }
+
+
+
+                },
+                editor(index) {
+                    console.log(this.books[index].id);
+                    this.newid = this.books[index].id
+                        // this.newid = index
+                    this.newname = this.books[index].name
+                    this.isdisabled = true
+                    console.log(index);
+                    this.index = index
+
+                },
+                deletebok(index) {
+
+                    if (confirm('确定删除？')) {
+                        console.log(index);
+                        console.log(this.books);
+                        console.log(this.books[index]);
+                        let num = this.books[index]
+                        this.books.splice(num, 1)
+                    } else {
+                        alert('你逗我玩呢？？？？')
+                    }
+
+                }
+
+
+            },
+            computed: {
+                sum2() {
+                    console.log(this);
+                    this.sum = this.books.length
+
+
+                    console.log(this.sum);
+                    console.log(this.books.length);
+
+                    return this.sum
+
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

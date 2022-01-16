@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vueLibrary/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        用户名：<input type="text" v-model='firstname' /> 用户名：
+        <input type="text" v-model='lastname' />
+        <!-- 第一种：js拼接 -->
+        <p>js拼接：{{firstname+'-'+lastname}}</p>
+        <!-- 第二种：函数 -->
+        <p>函数方法：{{getFullname()}}</p>
+        <p>函数方法：{{getFullname()}}</p>
+        <p>函数方法：{{getFullname()}}</p>
+
+        <!-- 第三种计算属性 -->
+        <p>计算属性{{fullname}}</p>
+        <p>计算属性{{fullname}}</p>
+        <p>计算属性{{fullname}}</p>
+
+        <p>计算属性简写：{{fullname2}}</p>
+
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                firstname: '彭',
+                lastname: '飞'
+            },
+            methods: {
+                getFullname() {
+                    console.log('被调用');
+                    return this.firstname + '-' + this.lastname
+                }
+            },
+            // 计算属性：由计算得来的属性，特点：当我想要一个属性，但是没有定义这个属性，并且属性有我现有属性来计算
+            computed: {
+                fullname: {
+                    get() {
+                        console.log('我被调用了，计算属性');
+                        return this.firstname + '-' + this.lastname
+                    }
+                },
+                fullname2() {
+                    return this.firstname + '-' + this.lastname
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
